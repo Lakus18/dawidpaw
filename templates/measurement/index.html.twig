@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block title %}Prognozy pogody{% endblock %}
+{% block body %}
+    <h1>Prognozy pogody</h1>
+    <a class="btn btn-primary mb-3" href="{{ path('app_measurement_new') }}">Dodaj prognozę</a>
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead><tr><th>ID</th><th>Lokalizacja</th><th>Data</th><th>Temperatura</th><th>Akcje</th></tr></thead>
+            <tbody>
+            {% for measurement in measurements %}
+                <tr>
+                    <td>{{ measurement.id }}</td>
+                    <td>
+                        {% if measurement.location %}
+                            {{ measurement.location.city }} ({{ measurement.location.country }})
+                        {% else %}
+                            <span class="text-danger">Brak lokalizacji — wybierz ją w edycji.</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ measurement.date|date('Y-m-d') }}</td>
+                    <td>{{ measurement.celsius }} °C</td>
+                    <td>
+                        <a href="{{ path('app_measurement_show', {'id': measurement.id}) }}">Szczegóły</a>
+                        <a class="ms-2" href="{{ path('app_measurement_edit', {'id': measurement.id}) }}">Edytuj</a>
+                        {{ include('measurement/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5">Brak prognoz. Dodaj najpierw lokalizację, a następnie prognozę.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

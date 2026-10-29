@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nowa prognoza{% endblock %}
+{% block body %}
+    <h1>Nowa prognoza pogody</h1>
+    {{ include('measurement/_form.html.twig') }}
+    <a href="{{ path('app_measurement_index') }}">Powrót do listy</a>
+{% endblock %}

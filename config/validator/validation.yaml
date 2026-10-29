@@ -1,0 +1,63 @@
+App\Entity\Location:
+    properties:
+        city:
+            - NotBlank:
+                  message: 'Podaj nazwę miasta.'
+                  groups: [new, edit]
+            - Length:
+                  max: 255
+                  groups: [new, edit]
+        country:
+            - NotBlank:
+                  message: 'Wybierz państwo.'
+                  groups: [new, edit]
+            - Choice:
+                  choices: [PL, DE, FR, ES, IT, GB, US]
+                  message: 'Wybierz państwo z listy.'
+                  groups: [new, edit]
+        latitude:
+            - NotBlank:
+                  message: 'Podaj szerokość geograficzną.'
+                  groups: [new, edit]
+            - Range:
+                  min: -90
+                  max: 90
+                  notInRangeMessage: 'Szerokość geograficzna musi być między {{ min }} a {{ max }}.'
+                  groups: [new, edit]
+        longitude:
+            - NotBlank:
+                  message: 'Podaj długość geograficzną.'
+                  groups: [new, edit]
+            - Range:
+                  min: -180
+                  max: 180
+                  notInRangeMessage: 'Długość geograficzna musi być między {{ min }} a {{ max }}.'
+                  groups: [new, edit]
+
+App\Entity\Measurement:
+    properties:
+        location:
+            - NotNull:
+                  message: 'Wybierz lokalizację prognozy.'
+                  groups: [new, edit]
+        date:
+            - NotNull:
+                  message: 'Podaj datę prognozy.'
+                  groups: [new, edit]
+            - GreaterThanOrEqual:
+                  value: 'today'
+                  message: 'Nowa prognoza musi dotyczyć dzisiaj lub przyszłości.'
+                  groups: [new]
+        celsius:
+            - NotBlank:
+                  message: 'Podaj temperaturę.'
+                  groups: [new, edit]
+            - Regex:
+                  pattern: '/^-?\d+$/'
+                  message: 'Podaj temperaturę w pełnych stopniach.'
+                  groups: [new, edit]
+            - Range:
+                  min: -100
+                  max: 100
+                  notInRangeMessage: 'Temperatura musi być między {{ min }} a {{ max }} °C.'
+                  groups: [new, edit]

@@ -13,6 +13,29 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MeasurementRepository extends ServiceEntityRepository
 {
+    /** @return Measurement[] */
+    public function findAllWithLocation(): array
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.location', 'location')
+            ->addSelect('location')
+            ->orderBy('m.date', 'DESC')
+            ->addOrderBy('m.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findWithLocation(int $id): ?Measurement
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.location', 'location')
+            ->addSelect('location')
+            ->where('m.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function findByLocation(Location $location) {
         $gb = $this->createQueryBuilder('m');
         $gb->where('m.location = :location')
