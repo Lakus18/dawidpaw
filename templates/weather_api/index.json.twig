@@ -1,0 +1,13 @@
+{
+    "city": "{{ city|escape('js')|raw }}",
+    "country": "{{ country|escape('js')|raw }}",
+    "measurements": [
+        {% for measurement in measurements %}
+        {
+            "date": "{{ measurement.date.format('Y-m-d') }}",
+            "celsius": {% if measurement.celsius is null %}null{% else %}"{{ measurement.celsius|escape('js')|raw }}"{% endif %},
+            "fahrenheit": {{ measurement.fahrenheit ?? 'null' }}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}

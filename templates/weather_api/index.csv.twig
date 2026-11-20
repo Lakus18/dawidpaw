@@ -1,0 +1,17 @@
+{% macro field(value) -%}
+    {%- if ',' in value or '"' in value or "\r" in value or "\n" in value -%}
+        "{{ value|replace({'"': '""'})|raw }}"
+    {%- else -%}
+        {{ value|raw }}
+    {%- endif -%}
+{%- endmacro %}
+
+{{- "city,country,date,celsius,fahrenheit\r\n" -}}
+{%- for measurement in measurements -%}
+    {{- _self.field(city) -}},
+    {{- _self.field(country) -}},
+    {{- measurement.date.format('Y-m-d') -}},
+    {{- measurement.celsius -}},
+    {{- measurement.fahrenheit -}}
+    {{- "\r\n" -}}
+{%- endfor -%}
